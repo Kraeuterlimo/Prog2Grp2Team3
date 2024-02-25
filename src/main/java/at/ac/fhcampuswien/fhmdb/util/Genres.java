@@ -1,12 +1,9 @@
 package at.ac.fhcampuswien.fhmdb.util;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Genres {
-    private List<String> genres = Arrays.asList("ACTION", "ADVENTURE", "ANIMATION", "BIOGRAPHY", "COMEDY", "CRIME", "DRAMA",
-        "DOCUMENTARY", "FAMILY", "FANTASY", "HISTORY", "HORROR", "MUSICAL", "MYSTERY", "ROMANCE", "SCIENCE_FICTION",
-        "SPORT", "THRILLER", "WAR", "WESTERN");
+    private List<String> genres = new ArrayList<>();
 
     public List<String> getGenres() {
         return genres;
@@ -14,5 +11,15 @@ public class Genres {
 
     public void setGenres(List<String> genres) {
         this.genres = genres;
+    }
+    public void addGenre(String genre){
+        if(!genres.contains(genre)){
+            this.genres.add(genre);
+        }
+    }
+    public void addGenres(List<String> genres){
+        if(!genres.containsAll(genres)){
+            this.genres.addAll(genres);
+        }
     }
 }

@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
+import at.ac.fhcampuswien.fhmdb.HomeController;
+
 import java.util.*;
 
 public class Movie {
@@ -13,11 +15,13 @@ public class Movie {
         this.title = title;
         this.description = description;
         addGenres(genre);
+        HomeController.genres.addGenre(genre);
     }
     public Movie(String title, String description, List<String> genres) {
         this.title = title;
         this.description = description;
         addGenres(genres);
+        HomeController.genres.addGenres(genres);
     }
 
     public String getTitle() {
@@ -49,11 +53,11 @@ public class Movie {
 
     public static List<Movie> initializeMovies(){
         List<Movie> movies = new ArrayList<>();
-        List<String> movieGenres = List.of("Action", "Romance");
+        List<String> movieGenres = List.of("ACTION", "ROMANCE");
         // TODO add some dummy data here
-        movies.add(new Movie("Inception","People dream alot.", "Science Fiction"));
-        movies.add(new Movie("The Dark Knight","No family and likes the night.", "Action"));
-        movies.add(new Movie("Forrest Gump","If running was fun." , "Drama"));
+        movies.add(new Movie("Inception","People dream alot.", "SCIENCE_FICTION"));
+        movies.add(new Movie("The Dark Knight","No family and likes the night.", "ACTION"));
+        movies.add(new Movie("Forrest Gump","If running was fun." , "DRAMA"));
         movies.add(new Movie("Spider-Man Homecoming", "Basic life in High school.", movieGenres));
 
         return movies;
