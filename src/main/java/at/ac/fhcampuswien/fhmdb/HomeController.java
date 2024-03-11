@@ -6,6 +6,8 @@ import at.ac.fhcampuswien.fhmdb.util.Genres;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HomeController implements Initializable {
     @FXML
@@ -55,17 +58,37 @@ public class HomeController implements Initializable {
         genreComboBox.getItems().addAll(genres.getGenres());
 
 
+        searchField.textProperty().addListener(
+                new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
+                        ObservableList<Movie> movieListCopy = FXCollections.observableArrayList(observableMovies);
+
+                        movieListCopy =
+                        observableMovies.stream()
+                                .filter(movie -> movie.getTitle().contains(newValue) || movie.getDescription().contains(newValue))
+                                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+                        movieListView.setItems(movieListCopy);
+                    }
+                    // TODO nicht case sensitive
+                    // TODO nur die Filme die gefiltert werden anzeigen --> Liste die angezeigt wird austauschen / ohne Filter soll wieder die alte dargestellt werden
+                }
+        );
 
         // TODO add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
 
+
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
             if(sortBtn.getText().equals("Sort (asc)")) {
-                // TODO sort observableMovies ascending
+                // TODO sort observableMovies ascending - DONE
+                FXCollections.sort(observableMovies, Comparator.comparing(Movie::getTitle));
                 sortBtn.setText("Sort (desc)");
             } else {
-                // TODO sort observableMovies descending
+                // TODO sort observableMovies descending - DONE
+                FXCollections.sort(observableMovies, Comparator.comparing(Movie::getTitle).reversed());
                 sortBtn.setText("Sort (asc)");
             }
         });
