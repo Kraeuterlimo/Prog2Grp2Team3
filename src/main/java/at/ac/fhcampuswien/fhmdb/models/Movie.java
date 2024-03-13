@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Movie {
     private final String title;
+
     private final String description;
     // TODO add more properties here
     private final List<String> genres = new ArrayList<>();
@@ -59,6 +60,7 @@ public class Movie {
         movies.add(new Movie("The Dark Knight","No family and likes the night.", "ACTION"));
         movies.add(new Movie("Forrest Gump","If running was fun." , "DRAMA"));
         movies.add(new Movie("Spider-Man Homecoming", "Basic life in High school.", movieGenres));
+        movies.add(new Movie("Shutter Island","Crazy people on an island." , "DRAMA"));
 
         return movies;
     }

@@ -30,7 +30,7 @@ public class HomeController implements Initializable {
     public JFXListView movieListView;
 
     @FXML
-    public JFXComboBox genreComboBox;
+    public JFXComboBox <String> genreComboBox;
 
     @FXML
     public JFXButton sortBtn;
@@ -80,41 +80,42 @@ public class HomeController implements Initializable {
         // either set event handlers in the fxml file (onAction) or add them here
 
 
+
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
-            if(sortBtn.getText().equals("Sort (asc)")) {
-                // TODO sort observableMovies ascending - DONE
-                FXCollections.sort(observableMovies, Comparator.comparing(Movie::getTitle));
-                sortBtn.setText("Sort (desc)");
+            boolean sortAsc = sortBtn.getText().equals("Sort (asc)");
+            List<Movie> currentDisplayedMovies = new ArrayList<>(movieListView.getItems());
+
+            if (sortAsc) {
+                currentDisplayedMovies.sort(Comparator.comparing(Movie::getTitle));
             } else {
-                // TODO sort observableMovies descending - DONE
-                FXCollections.sort(observableMovies, Comparator.comparing(Movie::getTitle).reversed());
-                sortBtn.setText("Sort (asc)");
+                currentDisplayedMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
             }
+
+            movieListView.setItems(FXCollections.observableArrayList(currentDisplayedMovies));
+            sortBtn.setText(sortAsc ? "Sort (desc)" : "Sort (asc)");
+
         });
-
-
     }
+
+
     @FXML
     public void setGenreFilter() {
-        String selectedValue = (String) genreComboBox.getValue();
-        if (Objects.equals(selectedValue, "No Filter")){
-            resetGenreFilter();
+        String selectedValue = genreComboBox.getValue();
+
+        if ("No Filter".equals(selectedValue)) {
+            // Reset to show all movies if "No Filter" is selected
+            movieListView.setItems(observableMovies);
+        } else {
+            // Apply filter and show only matched movies
+            ObservableList<Movie> filteredMovies = allMovies.stream()
+                    .filter(movie -> movie.getGenres().contains(selectedValue))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            movieListView.setItems(filteredMovies);
         }
-        else{
-            observableMovies.clear();
-            for (Movie movie : allMovies) {
-                if (movie.getGenres().contains(selectedValue)) {
-                    observableMovies.add(movie);
-                }
-            }
-        }
-        movieListView.refresh();
-        System.out.println(selectedValue);
     }
+
     private void resetGenreFilter() {
-        observableMovies.clear();
-        observableMovies.setAll(allMovies);
-        movieListView.refresh();
+        movieListView.setItems(observableMovies);
     }
 }
