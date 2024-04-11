@@ -10,6 +10,8 @@ import java.util.Objects;
 
 public class FhmdbApplication extends Application {
     @Override
+
+    // this is a branch test//
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("home-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 890, 620);
